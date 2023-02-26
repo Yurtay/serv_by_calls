@@ -10,7 +10,7 @@ const schema = new Schema(
     password: {
       type: String,
     },
-    refreshToken: { type: String, required: true },
+    // refreshToken: { type: String, required: true },
   },
   {
     timestamps: true,
