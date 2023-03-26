@@ -46,7 +46,6 @@ router.post("/signUp", [
 
       res.status(201).send({ ...tokens, userId: newUser._id });
     } catch (e) {
-      console.log("eeeerrrroooorrrr", e);
       res.status(500).json({
         message: "На сервере произошла ошибка. Попробуйте позже",
       });

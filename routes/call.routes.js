@@ -1,8 +1,9 @@
 const express = require("express");
 const Call = require("../models/Call");
 const router = express.Router({ mergeParams: true });
+const auth = require("../middleware/auth.middleware");
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const calls = await Call.find();
     res.status(200).send(calls);

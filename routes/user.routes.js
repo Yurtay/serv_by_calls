@@ -13,12 +13,24 @@ router.get("/", auth, async (req, res) => {
       .json({ message: "На сервере произошла ошибка. Попробуйте позже" });
   }
 });
+router.get("/:userId", auth, async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+
+    res.status(200).send(user);
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "На сервере произошла ошибка. Попробуйте позже" });
+  }
+});
 
 router.patch("/:userId", auth, async (req, res) => {
   try {
     const { userId } = req.params;
-    console.log("userId", userId);
-    console.log("req.user._id", req.user._id);
     const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
       new: true,
     });
@@ -34,9 +46,22 @@ router.delete("/:userId", auth, async (req, res) => {
   try {
     const { userId } = req.params;
     const deleteUser = await User.findById(userId);
-    console.log("deleteUser", deleteUser);
     await deleteUser.remove();
     res.send(null);
+  } catch (e) {
+    res.status(500).json({
+      message: "На сервере произошла ошибка. Попробуйте позже",
+    });
+  }
+});
+
+// userId: req.user._id
+router.post("/", auth, async (req, res) => {
+  try {
+    const newUser = await User.create({
+      ...req.body,
+    });
+    res.status(201).send(newUser);
   } catch (e) {
     res.status(500).json({
       message: "На сервере произошла ошибка. Попробуйте позже",
